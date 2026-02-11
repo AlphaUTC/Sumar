@@ -19,10 +19,9 @@ app.get('/', (req, res) => {
     });
 });
 
-//comentario ejemplo 
+//comentario ejemplo suma
 app.post('/sumar',(req,res) => {
     const { num1,num2 } = req.body;
-
 
 
 //validar que se hayan enviado los dos numeros que no 
@@ -32,6 +31,55 @@ if (!num1 || !num2) {
 }
 //sumar los numeros
 const resultado = num1 + num2;
+//enviar resultado
+res.send({resultado});
+});
+
+//comentario ejemplo resta
+app.post('/restar',(req,res) => {
+    const { num1,num2 } = req.body;
+
+//validar que se hayan enviado los dos numeros que no 
+if (!num1 || !num2) {
+    return res.status(400).send({error:'Faltan numeros para restar'});
+
+}
+//sumar los numeros
+const resultado = num1 - num2;
+//enviar resultado
+res.send({resultado});
+});
+
+//comentario ejemplo multiplicacion
+app.post('/multiplicar',(req,res) => {
+    const { num1,num2 } = req.body;
+
+
+//validar que se hayan enviado los dos numeros que no 
+if (!num1 || !num2) {
+    return res.status(400).send({error:'Faltan numeros para multiplicar'});
+
+}
+//sumar los numeros
+const resultado = num1 * num2;
+
+//enviar resultado
+res.send({resultado});
+});
+
+//comentario ejemplo 
+app.post('/dividir',(req,res) => {
+    const { num1,num2 } = req.body;
+
+
+
+//validar que se hayan enviado los dos numeros que no 
+if (!num1 || !num2) {
+    return res.status(400).send({error:'Faltan numeros para dividir'});
+
+}
+//sumar los numeros
+const resultado = num1 / num2;
 
 //enviar resultado
 res.send({resultado});
