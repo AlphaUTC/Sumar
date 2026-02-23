@@ -1,10 +1,10 @@
-// Importación de librerias
+// Importación de librerías
 const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const cors = require('cors');
 
-// Configuración de puertos
+// Configuración de puerto
 app.set('port', process.env.PORT || 3000);
 app.set('json spaces', 2);
 
@@ -15,77 +15,156 @@ app.use(cors());
 
 app.get('/', (req, res) => {
     res.json({
-        "Title": "Hola Mundo"
+        "Title": "API Calculadora y Figuras Geométricas"
     });
 });
 
-//comentario ejemplo suma
-app.post('/sumar',(req,res) => {
-    const { num1,num2 } = req.body;
+// ===============================
+// OPERACIONES BÁSICAS
+// ===============================
 
+app.post('/sumar', (req, res) => {
+    const { num1, num2 } = req.body;
 
-//validar que se hayan enviado los dos numeros que no 
-if (!num1 || !num2) {
-    return res.status(400).send({error:'Faltan numeros para sumar'});
+    if (num1 === undefined || num2 === undefined) {
+        return res.status(400).send({ error: 'Faltan números para sumar' });
+    }
 
-}
-//sumar los numeros
-const resultado = num1 + num2;
-//enviar resultado
-res.send({resultado});
+    const resultado = Number(num1) + Number(num2);
+    res.send({ resultado });
 });
 
-//comentario ejemplo resta
-app.post('/restar',(req,res) => {
-    const { num1,num2 } = req.body;
+app.post('/restar', (req, res) => {
+    const { num1, num2 } = req.body;
 
-//validar que se hayan enviado los dos numeros que no 
-if (!num1 || !num2) {
-    return res.status(400).send({error:'Faltan numeros para restar'});
+    if (num1 === undefined || num2 === undefined) {
+        return res.status(400).send({ error: 'Faltan números para restar' });
+    }
 
-}
-//sumar los numeros
-const resultado = num1 - num2;
-//enviar resultado
-res.send({resultado});
+    const resultado = Number(num1) - Number(num2);
+    res.send({ resultado });
 });
 
-//comentario ejemplo multiplicacion
-app.post('/multiplicar',(req,res) => {
-    const { num1,num2 } = req.body;
+app.post('/multiplicar', (req, res) => {
+    const { num1, num2 } = req.body;
 
+    if (num1 === undefined || num2 === undefined) {
+        return res.status(400).send({ error: 'Faltan números para multiplicar' });
+    }
 
-//validar que se hayan enviado los dos numeros que no 
-if (!num1 || !num2) {
-    return res.status(400).send({error:'Faltan numeros para multiplicar'});
-
-}
-//sumar los numeros
-const resultado = num1 * num2;
-
-//enviar resultado
-res.send({resultado});
+    const resultado = Number(num1) * Number(num2);
+    res.send({ resultado });
 });
 
-//comentario ejemplo 
-app.post('/dividir',(req,res) => {
-    const { num1,num2 } = req.body;
+app.post('/dividir', (req, res) => {
+    const { num1, num2 } = req.body;
 
+    if (num1 === undefined || num2 === undefined) {
+        return res.status(400).send({ error: 'Faltan números para dividir' });
+    }
 
+    if (Number(num2) === 0) {
+        return res.status(400).send({ error: 'No se puede dividir entre 0' });
+    }
 
-//validar que se hayan enviado los dos numeros que no 
-if (!num1 || !num2) {
-    return res.status(400).send({error:'Faltan numeros para dividir'});
-
-}
-//sumar los numeros
-const resultado = num1 / num2;
-
-//enviar resultado
-res.send({resultado});
+    const resultado = Number(num1) / Number(num2);
+    res.send({ resultado });
 });
 
-//Iniciando el servidor
+// ===============================
+// CUADRADO
+// ===============================
+
+app.post('/cuadrado/area', (req, res) => {
+    const { lado } = req.body;
+
+    if (lado === undefined) {
+        return res.status(400).send({ error: 'Falta el valor del lado' });
+    }
+
+    const l = Number(lado);
+    const area = l * l;
+
+    res.send({ figura: "Cuadrado", area });
+});
+
+app.post('/cuadrado/perimetro', (req, res) => {
+    const { lado } = req.body;
+
+    if (lado === undefined) {
+        return res.status(400).send({ error: 'Falta el valor del lado' });
+    }
+
+    const l = Number(lado);
+    const perimetro = 4 * l;
+
+    res.send({ figura: "Cuadrado", perimetro });
+});
+
+// ===============================
+// TRIÁNGULO
+// ===============================
+
+app.post('/triangulo/area', (req, res) => {
+    const { base, altura } = req.body;
+
+    if (base === undefined || altura === undefined) {
+        return res.status(400).send({ error: 'Faltan base o altura' });
+    }
+
+    const b = Number(base);
+    const h = Number(altura);
+    const area = (b * h) / 2;
+
+    res.send({ figura: "Triángulo", area });
+});
+
+app.post('/triangulo/perimetro', (req, res) => {
+    const { lado1, lado2, lado3 } = req.body;
+
+    if (lado1 === undefined || lado2 === undefined || lado3 === undefined) {
+        return res.status(400).send({ error: 'Faltan lados del triángulo' });
+    }
+
+    const perimetro = Number(lado1) + Number(lado2) + Number(lado3);
+
+    res.send({ figura: "Triángulo", perimetro });
+});
+
+// ===============================
+// CÍRCULO
+// ===============================
+
+app.post('/circulo/area', (req, res) => {
+    const { radio } = req.body;
+
+    if (radio === undefined) {
+        return res.status(400).send({ error: 'Falta el radio' });
+    }
+
+    const r = Number(radio);
+    const area = Math.PI * r * r;
+
+    res.send({ figura: "Círculo", area });
+});
+
+app.post('/circulo/perimetro', (req, res) => {
+    const { radio } = req.body;
+
+    if (radio === undefined) {
+        return res.status(400).send({ error: 'Falta el radio' });
+    }
+
+    const r = Number(radio);
+    const perimetro = 2 * Math.PI * r;
+
+    res.send({ figura: "Círculo", perimetro });
+});
+
+// ===============================
+// INICIAR SERVIDOR
+// ===============================
+
 app.listen(app.get('port'), () => {
-    console.log("SERVIDOR EN EL PUERTO 3000");
+    console.log("SERVIDOR CORRIENDO EN EL PUERTO " + app.get('port'));
 });
